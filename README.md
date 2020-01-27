@@ -1,2 +1,2 @@
 "# AssemblyPixelart" 
-"# Picture in /pic folder"
+# Picture in /pic folder
