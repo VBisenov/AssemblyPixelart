@@ -1,3 +1,3 @@
 # AssemblyPixelart
 
-Picture is located in ~/pic folder
+Picture is located in /pic folder
