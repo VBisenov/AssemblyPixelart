@@ -1,2 +1,3 @@
-"# AssemblyPixelart" 
-"# Picture in /pic folder"
+# AssemblyPixelart
+
+Picture is located in /pic folder
