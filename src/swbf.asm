@@ -10,6 +10,7 @@
 	y DW ?				
 	xd dw 160               ;	координаты новой системы отсчета
 	yd dw 15
+	eyesColor DB 00h		; eyes color
 
 .CODE						;	Открыть сегмент кодов.
 
@@ -58,8 +59,89 @@ call kvadrat
 ret
 lev ENDP
 
+prav PROC ;процедура вывода квадрата справа от предыдущего
+add xc, 5
+call kvadrat
+ret
+prav ENDP
+
+ver PROC  ;процедура вывода квадрата сверху от предыдущего
+sub yc, 5
+call kvadrat
+ret
+ver ENDP
+
+niz PROC	;процедура вывода квадрата снизу от предыдущего
+add yc, 5
+call kvadrat
+ret
+niz ENDP
+
+
+
+
+write PROC
+	pusha
+	
+	cmp eyesColor, 04h 	;if black
+	jl toRed			;then red
+	mov eyesColor, 00h	;else black
+	jmp toEquals
+	toRed:
+	mov eyesColor, 04h
+	toEquals:
+	mov forcolor, 00h 	;if equals then black
+
+	mov xc, 25
+	mov yc, 45
+	mov AH, eyesColor	
+	mov forcolor, AH
+	call kvadrat
+	call niz
+	call niz
+	call lev
+	call ver
+	call ver
+	call lev
+	call niz
+	call lev
+	call ver
+	call lev
+	call lev
+	mov forcolor, 0Fh		;White color
+	call lev	
+	mov AH, eyesColor	
+	mov forcolor, AH
+	call lev
+	call lev
+	call lev
+	call lev
+	call lev
+	call lev
+	call niz
+	call niz
+	call prav
+	call ver
+	call prav
+	call prav
+	int 10h
+	popa
+	ret
+write ENDP
+
+eyes PROC
+	MOV AH,08    ; Function to read a char from keyboard
+	INT 21h
+	cmp AX, AX
+	jnz continue
+	call write
+	continue:
+	call eyes
+eyes ENDP
+
 
 Main PROC			;	Подготовка данных
+
 	mov AX, @DATA			;	
 	mov DS, AX				;	DS = начало сегмента данных
 	mov AH, 0				;	функция_выбора_видео_режима(
@@ -625,7 +707,7 @@ Main PROC			;	Подготовка данных
 	call lev
 	call lev
 
-	mov xc, 25				; 20 str
+	mov xc, 25				; 21 str
 	mov yc, 110
 	mov forcolor, 0Fh		; White color
 	call lev
@@ -642,6 +724,7 @@ Main PROC			;	Подготовка данных
 	call lev
 	call lev
 
+	call eyes
 
 	mov AX, 4C00h			;	функция_завершения_работы(
 	int 21h					;	)
